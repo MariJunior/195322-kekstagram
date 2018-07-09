@@ -22,11 +22,31 @@ var DESCRIPTION_PATTERNS = [
   'Вот это тачка!'
 ];
 var AVATARS_COUNT = 6;
-
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
 var fragment = document.createDocumentFragment();
 var pictureTemplate = document.querySelector('#picture').content;
 var picturesContainer = document.querySelector('.pictures');
 var bigPicture = document.querySelector('.big-picture');
+var pictureCancel = document.querySelector('#picture-cancel');
+var uploadImage = picturesContainer.querySelector('#upload-file');
+var imageSettings = picturesContainer.querySelector('.img-upload__overlay');
+var uploadCancel = picturesContainer.querySelector('#upload-cancel');
+var resizeControlMinus = picturesContainer.querySelector('.resize__control--minus');
+var resizeControlPlus = picturesContainer.querySelector('.resize__control--plus');
+var resizeControlValue = picturesContainer.querySelector('.resize__control--value');
+var imageUploadPreview = picturesContainer.querySelector('.img-upload__preview');
+var imageUploadPreviewImg = imageUploadPreview.querySelector('img');
+var effectsList = picturesContainer.querySelector('.effects__list');
+var imageUploadScale = document.querySelector('.img-upload__scale');
+var scalePin = imageUploadScale.querySelector('.scale__pin');
+var scaleLine = imageUploadScale.querySelector('.scale__line');
+var scaleValue = imageUploadScale.querySelector('.scale__value');
+var SCALE = {
+  min: 25,
+  max: 100,
+  step: 25
+};
 
 var getRandomNumber = function (min, max) {
   return Math.floor(min + Math.random() * (max - min + 1));
@@ -68,21 +88,6 @@ var generatePicturesPreview = function (picturesQuantity) {
 
 var pictures = generatePicturesPreview(QUANTITY_OF_PICTURES);
 
-var generatePicturesInfo = function (picturesItem) {
-  var previewElement = pictureTemplate.querySelector('.picture__link').cloneNode(true);
-  previewElement.querySelector('.picture__img').src = picturesItem.url;
-  previewElement.querySelector('.picture__stat--likes').textContent = picturesItem.likes;
-  previewElement.querySelector('.picture__stat--comments').textContent = picturesItem.comments.length;
-  return previewElement;
-};
-
-var renderPictures = function () {
-  for (var i = 0; i < QUANTITY_OF_PICTURES; ++i) {
-    fragment.appendChild(generatePicturesInfo(pictures[i]));
-  }
-  picturesContainer.appendChild(fragment);
-};
-
 var showBigPicture = function (picture) {
   var commentsContainer = bigPicture.querySelector('.social__comments');
   var commentTemplate = bigPicture.querySelector('.social__comment');
@@ -106,5 +111,138 @@ var showBigPicture = function (picture) {
   bigPicture.querySelector('.social__loadmore').classList.add('visually-hidden');
 };
 
+var onBigPhotoEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    evt.preventDefault();
+    closeBigPhoto();
+  }
+};
+
+var closeBigPhoto = function () {
+  bigPicture.classList.add('hidden');
+  document.removeEventListener('keydown', onBigPhotoEscPress);
+};
+
+var generatePictures = function (picturesItem) {
+  var previewElement = pictureTemplate.querySelector('.picture__link').cloneNode(true);
+  previewElement.querySelector('.picture__img').src = picturesItem.url;
+  previewElement.querySelector('.picture__stat--likes').textContent = picturesItem.likes;
+  previewElement.querySelector('.picture__stat--comments').textContent = picturesItem.comments.length;
+  previewElement.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    showBigPicture(picturesItem);
+    document.addEventListener('keydown', onBigPhotoEscPress);
+  });
+  return previewElement;
+};
+
+var renderPictures = function () {
+  for (var i = 0; i < QUANTITY_OF_PICTURES; ++i) {
+    fragment.appendChild(generatePictures(pictures[i]));
+  }
+  picturesContainer.appendChild(fragment);
+};
+
 renderPictures();
-showBigPicture(pictures[0]);
+
+pictureCancel.addEventListener('click', function () {
+  closeBigPhoto();
+});
+
+pictureCancel.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeBigPhoto();
+  }
+});
+
+var onSettingsPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    evt.preventDefault();
+    closeSettings();
+  }
+};
+
+var openSettings = function () {
+  imageSettings.classList.remove('hidden');
+  document.addEventListener('keydown', onSettingsPopupEscPress);
+};
+
+var closeSettings = function () {
+  imageSettings.classList.add('hidden');
+  document.removeEventListener('keydown', onSettingsPopupEscPress);
+  uploadImage.value = '';
+  resizeControlValue.value = '55%';
+  imageUploadPreview.style.transform = '';
+  imageUploadPreviewImg.className = '';
+};
+
+var resizeImage = function (sign) {
+  var controlValue = resizeControlValue.value;
+  controlValue = parseInt(controlValue, 10) - SCALE.step * sign;
+  if (controlValue > SCALE.max) {
+    controlValue = SCALE.max;
+  } else if (controlValue < SCALE.min) {
+    controlValue = SCALE.min;
+  }
+  controlValue += '%';
+  resizeControlValue.value = controlValue;
+  imageUploadPreview.style.transform = 'scale(' + (parseInt(controlValue, 10) / 100) + ')';
+};
+
+var getPersentPositionLeft = function (targetElem, parentElem) {
+  return (targetElem.offsetLeft / parentElem.offsetWidth).toFixed(2);
+};
+
+uploadImage.addEventListener('change', function () {
+  openSettings();
+});
+
+uploadCancel.addEventListener('click', function () {
+  closeSettings();
+});
+
+uploadCancel.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeSettings();
+  }
+});
+
+resizeControlMinus.addEventListener('click', function () {
+  resizeImage(1);
+});
+
+resizeControlPlus.addEventListener('click', function () {
+  resizeImage(-1);
+});
+
+effectsList.addEventListener('change', function (evt) {
+  var effectName = evt.target.value;
+  if (effectName === 'none') {
+    imageUploadScale.classList.add('hidden');
+  } else {
+    // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
+    imageUploadScale.classList.remove('hidden');
+  }
+  imageUploadPreviewImg.className = ''; // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
+  imageUploadPreviewImg.style = ''; // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
+  imageUploadPreviewImg.classList.add('effects__preview--' + effectName);
+});
+
+scalePin.addEventListener('mouseup', function () {
+  var pinPosition = getPersentPositionLeft(scalePin, scaleLine);
+  var effectName = effectsList.querySelector('.effects__radio').checked.value;
+  var effect = '';
+  scaleValue.setAttribute('value', Math.floor(pinPosition));
+  if (effectName === 'chrome') {
+    effect = 'grayscale(' + pinPosition + ')';
+  } else if (effectName === 'sepia') {
+    effect = 'sepia(' + pinPosition + ')';
+  } else if (effectName === 'marvin') {
+    effect = 'invert(' + (pinPosition * 100) + '%)';
+  } else if (effectName === 'phobos') {
+    effect = 'blur(' + (pinPosition * 3).toFixed(2) + 'px)';
+  } else if (effectName === 'heat') {
+    effect = 'brightness(' + (pinPosition * 3).toFixed(2) + ')';
+  }
+  imageUploadPreviewImg.style.filter = effect;
+});
