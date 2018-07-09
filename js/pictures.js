@@ -23,7 +23,7 @@ var DESCRIPTION_PATTERNS = [
 ];
 var AVATARS_COUNT = 6;
 var ESC_KEYCODE = 27;
-// var ENTER_KEYCODE = 13;
+var ENTER_KEYCODE = 13;
 var fragment = document.createDocumentFragment();
 var pictureTemplate = document.querySelector('#picture').content;
 var picturesContainer = document.querySelector('.pictures');
@@ -149,28 +149,31 @@ pictureCancel.addEventListener('click', function () {
   closeBigPhoto();
 });
 
-// pictureCancel.addEventListener('keydown', function (evt) {
-//   if (evt.keyCode === ENTER_KEYCODE) {
-//     closeBigPhoto();
-//   }
-// });
+pictureCancel.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeBigPhoto();
+  }
+});
 
-var onPopupEscPress = function (evt) {
+var onSettingsPopupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     evt.preventDefault();
-    closeSettins();
+    closeSettings();
   }
 };
 
-var openSettins = function () {
+var openSettings = function () {
   imageSettings.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
+  document.addEventListener('keydown', onSettingsPopupEscPress);
 };
 
-var closeSettins = function () {
+var closeSettings = function () {
   imageSettings.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
+  document.removeEventListener('keydown', onSettingsPopupEscPress);
   uploadImage.value = '';
+  resizeControlValue.value = '55%';
+  imageUploadPreview.style.transform = '';
+  imageUploadPreviewImg.className = '';
 };
 
 var resizeImage = function (sign) {
@@ -183,7 +186,6 @@ var resizeImage = function (sign) {
   }
   controlValue += '%';
   resizeControlValue.value = controlValue;
-  resizeControlValue.setAttribute('value', parseInt(controlValue, 10));
   imageUploadPreview.style.transform = 'scale(' + (parseInt(controlValue, 10) / 100) + ')';
 };
 
@@ -192,18 +194,18 @@ var getPersentPositionLeft = function (targetElem, parentElem) {
 };
 
 uploadImage.addEventListener('change', function () {
-  openSettins();
+  openSettings();
 });
 
 uploadCancel.addEventListener('click', function () {
-  closeSettins();
+  closeSettings();
 });
 
-// uploadCancel.addEventListener('keydown', function (evt) {
-//   if (evt.keyCode === ENTER_KEYCODE) {
-//     closeSettins();
-//   }
-// });
+uploadCancel.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closeSettings();
+  }
+});
 
 resizeControlMinus.addEventListener('click', function () {
   resizeImage(1);
@@ -213,11 +215,12 @@ resizeControlPlus.addEventListener('click', function () {
   resizeImage(-1);
 });
 
-effectsList.addEventListener('click', function (evt) {
+effectsList.addEventListener('change', function (evt) {
   var effectName = evt.target.value;
   if (effectName === 'none') {
     imageUploadScale.classList.add('hidden');
-  } else { // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
+  } else {
+    // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
     imageUploadScale.classList.remove('hidden');
   }
   imageUploadPreviewImg.className = ''; // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
