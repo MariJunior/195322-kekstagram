@@ -42,7 +42,7 @@ var effectName = '';
 var imageUploadScale = document.querySelector('.img-upload__scale');
 var scalePin = imageUploadScale.querySelector('.scale__pin');
 var scaleLine = imageUploadScale.querySelector('.scale__line');
-var scaleValue = imageUploadScale.querySelector('.scale__value');
+// var scaleValue = imageUploadScale.querySelector('.scale__value');
 var scaleLevel = imageUploadScale.querySelector('.scale__level');
 var SCALE = {
   min: 25,
