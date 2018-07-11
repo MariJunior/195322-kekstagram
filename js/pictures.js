@@ -168,6 +168,7 @@ var onSettingsPopupEscPress = function (evt) {
 var openSettings = function () {
   imageSettings.classList.remove('hidden');
   imageUploadScale.classList.add('hidden');
+  imageUploadPreview.style.transform = 'scale(0.55)'; // Для соответствия значения в поле масштаба по умолчанию
   document.addEventListener('keydown', onSettingsPopupEscPress);
 };
 
@@ -332,4 +333,20 @@ scalePin.addEventListener('mousedown', function (evt) {
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
+});
+
+scaleLine.addEventListener('click', function (upEvt) {
+  upEvt.preventDefault();
+  var coordX = upEvt.offsetX;
+  var scaleLineWidth = scaleLine.offsetWidth;
+  var positionValueClick = '';
+  var effectValueClick = null;
+  if (coordX >= 0 && coordX <= scaleLineWidth) {
+    positionValueClick = (coordX / scaleLineWidth) * 100 + '%';
+    // console.log(coordX, positionValueClick);
+  }
+  scalePin.style.left = positionValueClick;
+  scaleLevel.style.width = positionValueClick;
+  effectValueClick = getPersentPositionLeft(scalePin, scaleLine);
+  setEffectDeep(effectName, effectValueClick);
 });
