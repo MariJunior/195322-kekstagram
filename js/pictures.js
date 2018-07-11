@@ -167,6 +167,7 @@ var onSettingsPopupEscPress = function (evt) {
 
 var openSettings = function () {
   imageSettings.classList.remove('hidden');
+  imageUploadScale.classList.add('hidden');
   document.addEventListener('keydown', onSettingsPopupEscPress);
 };
 
@@ -276,7 +277,6 @@ resizeControlPlus.addEventListener('click', function () {
 });
 
 effectsList.addEventListener('change', function (evt) {
-  var defaultPinValue = scaleLine.offsetWidth + 'px';
   effectName = evt.target.value;
   if (effectName === 'none') {
     imageUploadScale.classList.add('hidden');
@@ -284,9 +284,10 @@ effectsList.addEventListener('change', function (evt) {
     // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
     imageUploadScale.classList.remove('hidden');
   }
-  imageUploadPreviewImg.className = ''; // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
-  imageUploadPreviewImg.style = ''; // Нужно, чтобы после просмотра оригинала остальные фильтры продолжали работать
+  imageUploadPreviewImg.className = '';
+  imageUploadPreviewImg.style = '';
   imageUploadPreviewImg.classList.add('effects__preview--' + effectName);
+  var defaultPinValue = scaleLine.offsetWidth + 'px';
   scalePin.style.left = defaultPinValue;
   scaleLevel.style.width = defaultPinValue;
 });
@@ -345,4 +346,17 @@ scalePin.addEventListener('mousedown', function (evt) {
 //   effectValue = getPersentPositionLeft(scalePin, scaleLine);
 //   setEffectDeep(effectName, effectValue);
 // };
-// scaleLine.addEventListener('click', onScalePinClick);
+
+// scaleLine.addEventListener('click', function (upEvt) {
+//   var coordX = upEvt.offsetX;
+//   // var scaleLineWidth = scaleLine.offsetWidth;
+//   var positionValueClick = '';
+//   var effectValueClick = null;
+//   if (coordX >= scaleLine.getBoundingClientRect().left && coordX <= scaleLine.getBoundingClientRect().right) {
+//     positionValueClick = coordX + '%';
+//   }
+//   scalePin.style.left = positionValueClick;
+//   scaleLevel.style.width = positionValueClick;
+//   effectValueClick = getPersentPositionLeft(scalePin, scaleLine);
+//   setEffectDeep(effectName, effectValueClick);
+// });
