@@ -333,30 +333,3 @@ scalePin.addEventListener('mousedown', function (evt) {
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
 });
-
-// var onScalePinClick = function (upEvt) {
-//   var coordX = upEvt.clientX;
-//   var positionValue = '';
-//   var effectValue = null;
-//   if (coordX >= scaleLine.getBoundingClientRect().left && coordX <= scaleLine.getBoundingClientRect().right) {
-//     positionValue = coordX + 'px';
-//   }
-//   scalePin.style.left = positionValue;
-//   scaleLevel.style.width = positionValue;
-//   effectValue = getPersentPositionLeft(scalePin, scaleLine);
-//   setEffectDeep(effectName, effectValue);
-// };
-
-// scaleLine.addEventListener('click', function (upEvt) {
-//   var coordX = upEvt.offsetX;
-//   // var scaleLineWidth = scaleLine.offsetWidth;
-//   var positionValueClick = '';
-//   var effectValueClick = null;
-//   if (coordX >= scaleLine.getBoundingClientRect().left && coordX <= scaleLine.getBoundingClientRect().right) {
-//     positionValueClick = coordX + '%';
-//   }
-//   scalePin.style.left = positionValueClick;
-//   scaleLevel.style.width = positionValueClick;
-//   effectValueClick = getPersentPositionLeft(scalePin, scaleLine);
-//   setEffectDeep(effectName, effectValueClick);
-// });
