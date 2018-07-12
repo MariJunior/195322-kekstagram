@@ -22,29 +22,18 @@
     'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
     'Вот это тачка!'
   ];
-  var AVATARS_COUNT = 6;
   var fragment = document.createDocumentFragment();
   var pictureTemplate = document.querySelector('#picture').content;
   var picturesContainer = document.querySelector('.pictures');
-  var bigPicture = document.querySelector('.big-picture');
-  var pictureCancel = document.querySelector('#picture-cancel');
-
-  var getRandomNumber = function (min, max) {
-    return Math.floor(min + Math.random() * (max - min + 1));
-  };
-
-  var getRandomArrayElement = function (arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  };
 
   var generateRandomComment = function (source) {
     var comments = [];
-    var commentsQuantity = getRandomNumber(1, source.length);
-    var commentLength = getRandomNumber(1, 2);
+    var commentsQuantity = window.utils.getRandomNumber(1, source.length);
+    var commentLength = window.utils.getRandomNumber(1, 2);
     for (var i = 0; i < commentsQuantity; ++i) {
       comments[i] = '';
       for (var j = 0; j < commentLength; ++j) {
-        comments[i] += ' ' + getRandomArrayElement(source);
+        comments[i] += ' ' + window.utils.getRandomArrayElement(source);
       }
     }
     return comments;
@@ -53,9 +42,9 @@
   var generatePictureData = function (pictureIndex) {
     return {
       url: 'photos/' + (pictureIndex + 1) + '.jpg',
-      likes: getRandomNumber(Likes.MIN, Likes.MAX),
+      likes: window.utils.getRandomNumber(Likes.MIN, Likes.MAX),
       comments: generateRandomComment(COMMENTS_PATTERNS),
-      description: getRandomArrayElement(DESCRIPTION_PATTERNS)
+      description: window.utils.getRandomArrayElement(DESCRIPTION_PATTERNS)
     };
   };
 
@@ -69,47 +58,13 @@
 
   var pictures = generatePicturesPreview(QUANTITY_OF_PICTURES);
 
-  var showBigPicture = function (picture) {
-    var commentsContainer = bigPicture.querySelector('.social__comments');
-    var commentTemplate = bigPicture.querySelector('.social__comment');
-
-    bigPicture.classList.remove('hidden');
-    bigPicture.querySelector('.big-picture__img img').src = picture.url;
-    bigPicture.querySelector('.likes-count').textContent = picture.likes;
-    bigPicture.querySelector('.comments-count').textContent = picture.comments.length;
-
-    commentsContainer.innerHTML = '';
-    var commentsFragment = document.createDocumentFragment();
-    for (var i = 0; i < picture.comments.length; ++i) {
-      commentTemplate.querySelector('.social__picture').src = 'img/avatar-' + getRandomNumber(1, AVATARS_COUNT) + '.svg';
-      commentTemplate.querySelector('.social__text').textContent = picture.comments[i];
-      commentsFragment.appendChild(commentTemplate.cloneNode(true));
-    }
-    commentsContainer.appendChild(commentsFragment);
-
-    bigPicture.querySelector('.social__caption').textContent = picture.description;
-    bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
-    bigPicture.querySelector('.social__loadmore').classList.add('visually-hidden');
-  };
-
-  var onBigPhotoEscPress = function (evt) {
-    window.utils.isEscEvent(evt, closeBigPhoto);
-  };
-
-  var closeBigPhoto = function () {
-    bigPicture.classList.add('hidden');
-    document.removeEventListener('keydown', onBigPhotoEscPress);
-  };
-
   var generatePictures = function (picturesItem) {
     var previewElement = pictureTemplate.querySelector('.picture__link').cloneNode(true);
     previewElement.querySelector('.picture__img').src = picturesItem.url;
     previewElement.querySelector('.picture__stat--likes').textContent = picturesItem.likes;
     previewElement.querySelector('.picture__stat--comments').textContent = picturesItem.comments.length;
     previewElement.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      showBigPicture(picturesItem);
-      document.addEventListener('keydown', onBigPhotoEscPress);
+      window.bigPictureOpen(evt, picturesItem);
     });
     return previewElement;
   };
@@ -122,12 +77,4 @@
   };
 
   renderPictures();
-
-  pictureCancel.addEventListener('click', function () {
-    closeBigPhoto();
-  });
-
-  pictureCancel.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, closeBigPhoto);
-  });
 })();
