@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var ScaleParameters = {
+  var ScaleParameter = {
     MIN: 25,
     MAX: 100,
     STEP: 25
@@ -51,12 +51,12 @@
   var resizeImage = function (sign) {
     var controlValue = resizeControlValue.value;
 
-    controlValue = parseInt(controlValue, 10) - ScaleParameters.STEP * sign;
+    controlValue = parseInt(controlValue, 10) - ScaleParameter.STEP * sign;
 
-    if (controlValue > ScaleParameters.MAX) {
-      controlValue = ScaleParameters.MAX;
-    } else if (controlValue < ScaleParameters.MIN) {
-      controlValue = ScaleParameters.MIN;
+    if (controlValue > ScaleParameter.MAX) {
+      controlValue = ScaleParameter.MAX;
+    } else if (controlValue < ScaleParameter.MIN) {
+      controlValue = ScaleParameter.MIN;
     }
 
     controlValue += '%';
@@ -70,10 +70,10 @@
 
   var setEffectDeep = function (effect, value) {
     var effectDeep = '';
-    var effectsMaxValues = {
-      marvinMax: 100,
-      phobosMax: 3,
-      heatMax: 3
+    var MaxValue = {
+      MARVIN: 100,
+      PHOBOS: 3,
+      HEAT: 3
     };
 
     switch (effect) {
@@ -84,13 +84,13 @@
         effectDeep = 'sepia(' + value + ')';
         break;
       case 'marvin':
-        effectDeep = 'invert(' + (value * effectsMaxValues.marvinMax) + '%)';
+        effectDeep = 'invert(' + (value * MaxValue.MARVIN) + '%)';
         break;
       case 'phobos':
-        effectDeep = 'blur(' + (value * effectsMaxValues.phobosMax).toFixed(2) + 'px)';
+        effectDeep = 'blur(' + (value * MaxValue.PHOBOS).toFixed(2) + 'px)';
         break;
       case 'heat':
-        effectDeep = 'brightness(' + (value * effectsMaxValues.heatMax).toFixed(2) + ')';
+        effectDeep = 'brightness(' + (value * MaxValue.HEAT).toFixed(2) + ')';
         break;
       default:
         break;

@@ -3,6 +3,7 @@
 (function () {
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
+  var TIMEOUT = 3000;
 
   window.utils = {
     isEscEvent: function (evt, action) {
@@ -37,7 +38,7 @@
 
       setTimeout(function () {
         node.remove();
-      }, 3000);
+      }, TIMEOUT);
     }
   };
 })();

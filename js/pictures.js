@@ -6,7 +6,7 @@
   var pictureTemplate = document.querySelector('#picture').content;
   var picturesContainer = document.querySelector('.pictures');
 
-  var generatePictures = function (picturesItem) {
+  var generatePreviewNode = function (picturesItem) {
     var previewElement = pictureTemplate.querySelector('.picture__link').cloneNode(true);
 
     previewElement.querySelector('.picture__img').src = picturesItem.url;
@@ -20,9 +20,9 @@
     return previewElement;
   };
 
-  var renderPictures = function (arr) {
+  var renderElements = function (pictures) {
     for (var i = 0; i < QUANTITY_OF_PICTURES; ++i) {
-      fragment.appendChild(generatePictures(window.utils.getRandomArrayElement(arr)));
+      fragment.appendChild(generatePreviewNode(pictures[i]));
     }
 
     picturesContainer.appendChild(fragment);
@@ -30,7 +30,7 @@
 
   window.backend.load(
       function (pictures) {
-        renderPictures(pictures);
+        renderElements(pictures);
       },
       window.utils.errorHandler
   );
