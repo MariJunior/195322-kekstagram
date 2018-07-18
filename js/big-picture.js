@@ -10,6 +10,7 @@
     var commentTemplate = bigPicture.querySelector('.social__comment');
     var commentsFragment = document.createDocumentFragment();
 
+    document.body.classList.add('modal-open');
     bigPicture.classList.remove('hidden');
 
     bigPicture.querySelector('.big-picture__img img').src = picture.url;
@@ -38,6 +39,7 @@
 
   var closeBigPhoto = function () {
     bigPicture.classList.add('hidden');
+    document.body.classList.remove('modal-open');
 
     document.removeEventListener('keydown', onBigPhotoEscPress);
   };

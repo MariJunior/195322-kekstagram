@@ -24,6 +24,34 @@
     getRandomArrayElement: function (arr) {
       return arr[Math.floor(Math.random() * arr.length)];
     },
+    shuffleArray: function (arr) {
+      var newArray = arr.slice();
+      for (var i = newArray.length - 1; i > 0; --i) {
+        var num = Math.floor(Math.random() * (i + 1));
+        var d = newArray[num];
+        newArray[num] = newArray[i];
+        newArray[i] = d;
+      }
+      return newArray;
+    },
+    arrayToLowerCase: function (arr) {
+      var newArray = [];
+      arr.forEach(function (element) {
+        newArray.push(element.toLowerCase());
+      });
+      return newArray;
+    },
+    removeDuplicatesFromArray: function (arr) {
+      return arr.filter(function (element, index, self) {
+        return self.indexOf(element) === index;
+      });
+    },
+    changeActiveElement: function (element, neighbors, className) {
+      neighbors.forEach(function (item) {
+        item.classList.remove(className);
+      });
+      element.classList.add(className);
+    },
     errorHandler: function (errorMessage) {
       var node = document.createElement('div');
 
