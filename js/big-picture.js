@@ -5,6 +5,8 @@
   var COMMENTS_DISPLAYED_AT_TIME = 5;
   var bigPicture = document.querySelector('.big-picture');
   var pictureCancel = document.querySelector('#picture-cancel');
+  var loadMoreComments = bigPicture.querySelector('.social__loadmore');
+  var socialCommentCount = bigPicture.querySelector('.social__comment-count');
 
   var showBigPicture = function (picture) {
     var commentsContainer = bigPicture.querySelector('.social__comments');
@@ -31,9 +33,10 @@
 
     commentsContainer.appendChild(commentsFragment);
 
+
     bigPicture.querySelector('.social__caption').textContent = picture.description;
-    bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
-    bigPicture.querySelector('.social__loadmore').classList.add('visually-hidden');
+    socialCommentCount.classList.add('visually-hidden');
+    loadMoreComments.classList.add('visually-hidden');
   };
 
   var onBigPhotoEscPress = function (evt) {
