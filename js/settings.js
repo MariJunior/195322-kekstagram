@@ -2,9 +2,17 @@
 
 (function () {
   var ScaleParameter = {
+    DEFAULT: 55,
     MIN: 25,
     MAX: 100,
     STEP: 25
+  };
+  var LimitEffectValue = {
+    MARVIN_MAX: 100,
+    PHOBOS_MAX: 3,
+    HEAT_MAX: 3,
+    HEAT_MIN: 1,
+    DEFAULT: 100
   };
   var effectName = '';
   var picturesContainer = document.querySelector('.pictures');
@@ -18,9 +26,11 @@
   var imageUploadPreviewImg = imageUploadPreview.querySelector('img');
   var imageUploadScale = document.querySelector('.img-upload__scale');
   var effectsList = picturesContainer.querySelector('.effects__list');
+  var defaultEffect = document.querySelector('#effect-none');
   var scalePin = imageUploadScale.querySelector('.scale__pin');
   var scaleLine = imageUploadScale.querySelector('.scale__line');
   var scaleLevel = imageUploadScale.querySelector('.scale__level');
+  var scaleValue = imageUploadScale.querySelector('.scale__value');
 
   var onSettingsPopupEscPress = function (evt) {
     if (evt.target.tagName !== 'INPUT' && evt.target.tagName !== 'TEXTAREA') {
@@ -33,19 +43,24 @@
     imageUploadScale.classList.add('hidden');
 
     imageUploadPreview.style.transform = 'scale(0.55)'; // Для соответствия значения в поле масштаба по умолчанию
+    defaultEffect.checked = true; // Убирает атрибут checked у фильтра heat по умолчанию
 
     document.addEventListener('keydown', onSettingsPopupEscPress);
   };
 
+  window.resetSettings = function () {
+    uploadImage.value = '';
+    resizeControlValue.value = ScaleParameter.DEFAULT + '%';
+    scaleValue.value = LimitEffectValue.DEFAULT;
+    imageUploadPreviewImg.style = '';
+    imageUploadPreviewImg.className = '';
+    defaultEffect.checked = true;
+  };
+
   var closeSettings = function () {
     imageSettings.classList.add('hidden');
-
     document.removeEventListener('keydown', onSettingsPopupEscPress);
-
-    uploadImage.value = '';
-    resizeControlValue.value = '55%';
-    imageUploadPreview.style.transform = '';
-    imageUploadPreviewImg.className = '';
+    window.resetSettings();
   };
 
   var resizeImage = function (sign) {
@@ -70,11 +85,6 @@
 
   var setEffectDeep = function (effect, value) {
     var effectDeep = '';
-    var MaxValue = {
-      MARVIN: 100,
-      PHOBOS: 3,
-      HEAT: 3
-    };
 
     switch (effect) {
       case 'chrome':
@@ -84,13 +94,13 @@
         effectDeep = 'sepia(' + value + ')';
         break;
       case 'marvin':
-        effectDeep = 'invert(' + (value * MaxValue.MARVIN) + '%)';
+        effectDeep = 'invert(' + (value * LimitEffectValue.MARVIN_MAX) + '%)';
         break;
       case 'phobos':
-        effectDeep = 'blur(' + (value * MaxValue.PHOBOS).toFixed(2) + 'px)';
+        effectDeep = 'blur(' + (value * LimitEffectValue.PHOBOS_MAX).toFixed(2) + 'px)';
         break;
       case 'heat':
-        effectDeep = 'brightness(' + (value * MaxValue.HEAT).toFixed(2) + ')';
+        effectDeep = 'brightness(' + ((value * (LimitEffectValue.HEAT_MAX - LimitEffectValue.HEAT_MIN)) + LimitEffectValue.HEAT_MIN).toFixed(2) + ')';
         break;
       default:
         break;
