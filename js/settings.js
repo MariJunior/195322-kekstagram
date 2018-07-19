@@ -70,10 +70,11 @@
 
   var setEffectDeep = function (effect, value) {
     var effectDeep = '';
-    var MaxValue = {
-      MARVIN: 100,
-      PHOBOS: 3,
-      HEAT: 3
+    var LimitValue = {
+      MARVIN_MAX: 100,
+      PHOBOS_MAX: 3,
+      HEAT_MAX: 3,
+      HEAT_MIN: 1
     };
 
     switch (effect) {
@@ -84,13 +85,13 @@
         effectDeep = 'sepia(' + value + ')';
         break;
       case 'marvin':
-        effectDeep = 'invert(' + (value * MaxValue.MARVIN) + '%)';
+        effectDeep = 'invert(' + (value * LimitValue.MARVIN_MAX) + '%)';
         break;
       case 'phobos':
-        effectDeep = 'blur(' + (value * MaxValue.PHOBOS).toFixed(2) + 'px)';
+        effectDeep = 'blur(' + (value * LimitValue.PHOBOS_MAX).toFixed(2) + 'px)';
         break;
       case 'heat':
-        effectDeep = 'brightness(' + (value * MaxValue.HEAT).toFixed(2) + ')';
+        effectDeep = 'brightness(' + ((value * (LimitValue.HEAT_MAX - LimitValue.HEAT_MIN)) + LimitValue.HEAT_MIN).toFixed(2) + ')';
         break;
       default:
         break;
