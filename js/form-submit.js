@@ -39,7 +39,7 @@
     pictureUpload.classList.add('hidden');
     hidePopups();
     userForm.reset();
-    userForm.removeEventListener('submit', onFormSubmit);
+    window.resetSettings();
   };
 
   var errorHandler = function () {

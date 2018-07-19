@@ -48,7 +48,7 @@
     document.addEventListener('keydown', onSettingsPopupEscPress);
   };
 
-  var resetSettings = function () {
+  window.resetSettings = function () {
     uploadImage.value = '';
     resizeControlValue.value = ScaleParameter.DEFAULT + '%';
     scaleValue.value = LimitEffectValue.DEFAULT;
@@ -60,7 +60,7 @@
   var closeSettings = function () {
     imageSettings.classList.add('hidden');
     document.removeEventListener('keydown', onSettingsPopupEscPress);
-    resetSettings();
+    window.resetSettings();
   };
 
   var resizeImage = function (sign) {
