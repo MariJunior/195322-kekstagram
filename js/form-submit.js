@@ -30,19 +30,15 @@
         hidePopups();
         window.backend.save(new FormData(userForm), successHandler, errorHandler, showPopup(uploadTemplate));
       } else if (evt.target.textContent === 'Загрузить другой файл') {
-        userForm.reset();
-        pictureUpload.classList.add('hidden');
-        hidePopups();
-        userForm.removeEventListener('submit', onFormSubmit);
+        successHandler();
       }
     });
   };
 
-  // FIXME: При повторном использовании формы перестаёт показываться попап "Загружаем..."
   var successHandler = function () {
-    userForm.reset();
     pictureUpload.classList.add('hidden');
     hidePopups();
+    userForm.reset();
     userForm.removeEventListener('submit', onFormSubmit);
   };
 
