@@ -2,6 +2,7 @@
 
 (function () {
   var AVATARS_COUNT = 6;
+  var COMMENTS_DISPLAYED_AT_TIME = 5;
   var bigPicture = document.querySelector('.big-picture');
   var pictureCancel = document.querySelector('#picture-cancel');
 
@@ -19,7 +20,9 @@
 
     commentsContainer.innerHTML = '';
 
-    for (var i = 0; i < picture.comments.length; ++i) {
+    var commentsCount = picture.comments.length > COMMENTS_DISPLAYED_AT_TIME ? COMMENTS_DISPLAYED_AT_TIME : picture.comments.length;
+
+    for (var i = 0; i < commentsCount; ++i) {
       commentTemplate.querySelector('.social__picture').src = 'img/avatar-' + window.utils.getRandomNumber(1, AVATARS_COUNT) + '.svg';
       commentTemplate.querySelector('.social__text').textContent = picture.comments[i];
 

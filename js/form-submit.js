@@ -1,19 +1,19 @@
 'use strict';
 
 (function () {
-  var pictureUpload = document.querySelector('.img-upload');
-  var userForm = pictureUpload.querySelector('.img-upload__form');
+  var pictureUpload = document.querySelector('.img-upload__overlay');
+  var userForm = document.querySelector('.img-upload__form');
   var errorLinks = document.querySelector('.error__links');
   var errorTemplate = document.querySelector('#picture').content.querySelector('.img-upload__message--error');
   var uploadTemplate = document.querySelector('#picture').content.querySelector('.img-upload__message--loading');
 
 
   var showPopup = function (popupTemplate) {
-    var splash = popupTemplate.cloneNode(true);
-    document.body.appendChild(splash);
-    splash.classList.remove('hidden');
-    splash.style.zIndex = '10';
-    splash.style.position = 'fixed';
+    var popup = popupTemplate.cloneNode(true);
+    document.body.appendChild(popup);
+    popup.classList.remove('hidden');
+    popup.style.zIndex = '10';
+    popup.style.position = 'fixed';
   };
 
   var hidePopups = function () {
@@ -30,18 +30,20 @@
         hidePopups();
         window.backend.save(new FormData(userForm), successHandler, errorHandler, showPopup(uploadTemplate));
       } else if (evt.target.textContent === 'Загрузить другой файл') {
+        userForm.reset();
+        pictureUpload.classList.add('hidden');
         hidePopups();
         userForm.removeEventListener('submit', onFormSubmit);
       }
     });
   };
 
+  // FIXME: При повторном использовании формы перестаёт показываться попап "Загружаем..."
   var successHandler = function () {
-    pictureUpload.classList.add('hidden');
-
     userForm.reset();
-    userForm.removeEventListener('submit', onFormSubmit);
+    pictureUpload.classList.add('hidden');
     hidePopups();
+    userForm.removeEventListener('submit', onFormSubmit);
   };
 
   var errorHandler = function () {
