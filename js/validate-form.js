@@ -39,7 +39,8 @@
   };
 
   userHashtags.addEventListener('input', function () {
-    var hashtagsArr = userHashtags.value.trim().split(' ');
+    var hashtags = userHashtags.value.replace(/\s+/g, ' ').trim();
+    var hashtagsArr = hashtags.split(' ');
 
     userHashtags.style.border = 'none';
     userHashtags.setCustomValidity('');
