@@ -56,13 +56,11 @@
     showBigPicture(targetElem);
 
     document.addEventListener('keydown', onBigPhotoEscPress);
+    pictureCancel.addEventListener('click', function () {
+      closeBigPhoto();
+    });
+    pictureCancel.addEventListener('keydown', function (closeEvt) {
+      window.utils.isEnterEvent(closeEvt, closeBigPhoto);
+    });
   };
-
-  pictureCancel.addEventListener('click', function () {
-    closeBigPhoto();
-  });
-
-  pictureCancel.addEventListener('keydown', function (evt) {
-    window.utils.isEnterEvent(evt, closeBigPhoto);
-  });
 })();
