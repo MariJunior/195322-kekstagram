@@ -945,6 +945,7 @@ main {
 }
 
 .social__header {
+  margin-bottom: 15px;
   padding: 15px 15px;
 
   display: -webkit-box;
@@ -1006,7 +1007,7 @@ main {
   background-image: url("../img/sprite.svg");
   background-size: 100%;
 
-  background-position: 0 -150px;
+  background-position: 0 -148px;
   opacity: 0.5;
 }
 
@@ -1033,7 +1034,6 @@ main {
 .social__comment {
   padding-left: 15px;
   padding-right: 15px;
-  padding-bottom: 20px;
 
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1042,6 +1042,10 @@ main {
   -webkit-box-align: center;
      -ms-flex-align: center;
         align-items: center;
+}
+
+.social__comment:not(:last-child) {
+  padding-bottom: 20px;
 }
 
 .social__comment-count {
