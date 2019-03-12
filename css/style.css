@@ -259,7 +259,7 @@ main {
   content: "";
   position: absolute;
   left: 5px;
-  top: -7px;
+  top: -15px;
 
   background-image: url("../img/sprite.svg");
   background-size: 100%;
@@ -267,14 +267,14 @@ main {
 
 .picture__stat--comments::before {
   width: 20px;
-  height: 16px;
+  height: 22px;
 
   background-position: 0 -53px;
 }
 
 .picture__stat--likes::before {
   width: 20px;
-  height: 16px;
+  height: 24px;
 
   background-position: 0 -80px;
 }
